@@ -1,4 +1,4 @@
-package com.sravan.rest.webservices.restfulwebservices.util;
+package com.sravan.rest.webservices.restfulwebservices.model;
 
 public class AddressRequest {
 

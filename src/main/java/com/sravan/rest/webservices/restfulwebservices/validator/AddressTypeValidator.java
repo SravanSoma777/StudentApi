@@ -13,6 +13,14 @@ public class AddressTypeValidator implements ConstraintValidator<AllowedAddressT
 
 	private List<String> listOfAllowedAddressTypes;
 
+	public List<String> getListOfAllowedAddressTypes() {
+		return listOfAllowedAddressTypes;
+	}
+
+	public void setListOfAllowedAddressTypes(List<String> listOfAllowedAddressTypes) {
+		this.listOfAllowedAddressTypes = listOfAllowedAddressTypes;
+	}
+
 	@Override
 	public void initialize(AllowedAddressTypes allowedAddressTypes) {
 		listOfAllowedAddressTypes = Arrays.asList(allowedAddressTypes.addressTypes());
@@ -22,16 +30,12 @@ public class AddressTypeValidator implements ConstraintValidator<AllowedAddressT
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		
-		try {
+		
 		if (value == null || !listOfAllowedAddressTypes.contains(value.toLowerCase())) {
 			throw new InvalidAddressTypeException("Invalid Address Type: " + value + ". Allowed Values are: " + listOfAllowedAddressTypes);
 		}
 		return listOfAllowedAddressTypes.contains(value.toLowerCase());
-		}catch(Exception e) {
-			System.err.println("Try Catch " + e.getMessage());
-			return false;
-		}
-		
 	}
 
+		
 }

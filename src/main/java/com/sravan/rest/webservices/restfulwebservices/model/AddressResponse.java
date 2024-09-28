@@ -1,4 +1,6 @@
-package com.sravan.rest.webservices.restfulwebservices.util;
+package com.sravan.rest.webservices.restfulwebservices.model;
+
+import com.sravan.rest.webservices.restfulwebservices.entity.AddressEntity;
 
 public class AddressResponse {
 
@@ -10,7 +12,7 @@ public class AddressResponse {
 	private String postalCode;
 	private String country;
 
-	public AddressResponse() {
+	public AddressResponse(AddressEntity updatedEntity) {
 		super();
 	}
 

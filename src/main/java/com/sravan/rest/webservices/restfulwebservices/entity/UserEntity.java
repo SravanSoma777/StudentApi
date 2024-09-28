@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.sravan.rest.webservices.restfulwebservices.annotation.AllowedStatuses;
 
 import jakarta.persistence.CascadeType;
@@ -32,10 +35,11 @@ public class UserEntity {
 	@Pattern(regexp = "^[A-Za-z]+([ '-][A-Za-z]+)*$")
 	private String name;
 
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = ("dd/MM/yyyy"))
 	// @jakarta.persistence.Temporal(TemporalType.DATE)
 	// @Temporal(TemporalType.DATE)
-	@JsonProperty("birth_date")
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
 	@NotNull
 	private LocalDate birthDate;
 
@@ -46,6 +50,20 @@ public class UserEntity {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "user_id")
 	private List<AddressEntity> addresses = new ArrayList<>();
+	
+	public UserEntity() {
+		super();
+	}
+
+	public UserEntity(Integer id, @NotBlank @Pattern(regexp = "^[A-Za-z]+([ '-][A-Za-z]+)*$") String name,
+			@NotNull LocalDate birthDate, @NotNull String status, List<AddressEntity> addresses) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.birthDate = birthDate;
+		this.status = status;
+		this.addresses = addresses;
+	}
 
 	public Integer getId() {
 		return id;
@@ -89,6 +107,14 @@ public class UserEntity {
 		this.addresses = addresses;
 
 	}
+
+	@Override
+	public String toString() {
+		return "UserEntity [id=" + id + ", name=" + name + ", birthDate=" + birthDate + ", status=" + status
+				+ ", addresses=" + addresses + "]";
+	}
+	
+	
 
 	/*
 	 * public void addAddress(AddressEntity address) { address.setUser(this); //

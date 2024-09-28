@@ -1,32 +1,48 @@
-package com.sravan.rest.webservices.restfulwebservices.util;
+package com.sravan.rest.webservices.restfulwebservices.model;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.sravan.rest.webservices.restfulwebservices.entity.AddressEntity;
 
-public class UserRequest {
+public class UserResponse {
 	
-	
+	private Integer id;
 	private String name;
-	@JsonAlias("birth_date")
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	
+	@JsonFormat(pattern = ("dd/MM/yyyy"))
+	// @jakarta.persistence.Temporal(TemporalType.DATE)
+	// @Temporal(TemporalType.DATE)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate birthDate;
 	private String status;
 	private List<AddressEntity> addresses;
 	
-	public UserRequest() {
+	public UserResponse() {
 		super();
 	}
 
-	public UserRequest(String name, LocalDate birthDate, String status, List<AddressEntity> addresses) {
+	public UserResponse(Integer id, String name, LocalDate birthDate, String status, List<AddressEntity> addresses) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.birthDate = birthDate;
 		this.status = status;
 		this.addresses = addresses;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -62,6 +78,4 @@ public class UserRequest {
 	}
 	
 	
-	
-
 }

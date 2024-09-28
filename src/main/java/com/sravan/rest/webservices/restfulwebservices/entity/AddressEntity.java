@@ -39,12 +39,31 @@ public class AddressEntity {
 	@NotBlank
 	private String country;
 	
+	
+	public AddressEntity() {
+		super();
+	}
+
+	public AddressEntity(Long id, @NotBlank String street, @NotBlank String city, @NotNull String addressType,
+			@NotBlank String state, @NotBlank String postalCode, @NotBlank String country) {
+		super();
+		this.id = id;
+		this.street = street;
+		this.city = city;
+		this.addressType = addressType;
+		this.state = state;
+		this.postalCode = postalCode;
+		this.country = country;
+	}
+
 	/*
 	 * @ManyToOne
 	 * 
 	 * @JoinColumn(name = "user_id", nullable = false) private UserEntity user;
 	 */
 	 
+	
+	
 	public Long getId() {
 		return id;
 	}

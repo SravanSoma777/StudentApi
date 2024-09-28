@@ -1,6 +1,9 @@
 package com.sravan.rest.webservices.restfulwebservices.exceptionhandling;
 
 public class InvalidStatusException extends RuntimeException {
+	
+	@SuppressWarnings("unused")
+	private String message;
 		
 	/**
 	 * 
@@ -9,5 +12,6 @@ public class InvalidStatusException extends RuntimeException {
 
 	public InvalidStatusException(String message) {
 		super(message);
+		this.message = message;
 	}
 }

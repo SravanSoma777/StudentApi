@@ -27,6 +27,19 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(UserNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
+
+		ErrorResponse errorResponse = new ErrorResponse(
+				HttpStatus.NOT_FOUND.value(), 
+				ex.getMessage(),
+				request.getDescription(false)
+		);
+		
+		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+	}
+	
 	@ExceptionHandler(InvalidAddressTypeException.class)
 	public ResponseEntity<?> handleInvalidAddressTypeException(InvalidAddressTypeException ex, WebRequest request) {
 

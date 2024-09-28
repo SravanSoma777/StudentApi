@@ -7,57 +7,86 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sravan.rest.webservices.restfulwebservices.entity.UserEntity;
+import com.sravan.rest.webservices.restfulwebservices.exceptionhandling.UserNotFoundException;
+import com.sravan.rest.webservices.restfulwebservices.model.UserRequest;
+import com.sravan.rest.webservices.restfulwebservices.model.UserResponse;
 import com.sravan.rest.webservices.restfulwebservices.repository.UserRepository;
-import com.sravan.rest.webservices.restfulwebservices.util.UserRequest;
-import com.sravan.rest.webservices.restfulwebservices.util.UserResponse;
 import com.sravan.rest.webservices.restfulwebservices.util.UserTransformer;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class UserDaoService implements IUserService {
-	
-		
+
 	@Autowired
 	private UserRepository repository;
-	
+
 	@Autowired
 	private UserTransformer userTransformer;
-	
 
-	@Override
-	public List<UserEntity> findAll() {
-	System.out.println(((List<UserEntity>) repository.findAll()).size());
-	
-	return (List<UserEntity>) repository.findAll();
+	public UserDaoService(UserTransformer userTransformer2) {
 	}
 
 	@Override
-	public Optional<UserResponse> findOne(Integer id) {
-		//return repository.findById(id).map(userMapper::toResponseDTO);
-	
-		return Optional.empty();
+	public List<UserEntity> findAll() {
+		System.out.println(((List<UserEntity>) repository.findAll()).size());
+
+		return (List<UserEntity>) repository.findAll();
+	}
+
+	@Override
+	public UserResponse findOne(Integer id) {
+
+		Optional<UserEntity> optUserEntity = repository.findById(id);
+		if (optUserEntity.isEmpty()) {
+
+			throw new UserNotFoundException(String.format("provided id %d not found", id));
+		}
+		System.out.println(optUserEntity.toString());
+
+		UserEntity user = optUserEntity.get();
+		return userTransformer.mapEntityToUserResponse(user);
 	}
 
 	@Override
 	@Transactional
 	public UserResponse save(UserRequest userRequest) {
-		 
-		UserEntity userEntity =  userTransformer.mapUserRequestToEntity(userRequest);
-		UserEntity savedUserEntity =  repository.save(userEntity);
-		 
+
+		UserEntity userEntity = userTransformer.mapUserRequestToEntity(userRequest, null);
+		UserEntity savedUserEntity = repository.save(userEntity);
+
 		return userTransformer.mapEntityToUserResponse(savedUserEntity);
 	}
 
 	@Override
 	public boolean deleteById(Integer id) {
-		if (repository.existsById(id)) {
+		
+		boolean existsById = repository.existsById(id);
+		if (existsById) {
 			repository.deleteById(id);
-			return true;
+		} else {
+			throw new UserNotFoundException("user with Id " + id + " not found");
 		}
-		return false;
+		return existsById;
+
 	}
-	
+
+	@Override
+	public UserResponse findOneAndUpdate(Integer id, UserRequest userRequest) {
+
+		Optional<UserEntity> userToBeUpdated = repository.findById(id);
+
+		if (userToBeUpdated.isPresent()) {
+
+			UserEntity mapUserRequestToEntity = userTransformer.mapUserRequestToEntity(userRequest, id);
+			UserEntity updatedUser = repository.save(mapUserRequestToEntity);
+
+			return userTransformer.mapEntityToUserResponse(updatedUser);
+		} else {
+			throw new RuntimeException("User not found with id: " + id);
+		}
+	}
+
 	/*
 	 * public List<UserEntity> findAll() { return repository.findAll(); }
 	 * 
