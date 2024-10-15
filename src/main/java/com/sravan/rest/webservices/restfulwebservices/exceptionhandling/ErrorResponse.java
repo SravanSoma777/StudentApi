@@ -1,4 +1,4 @@
-package com.sravan.rest.webservices.restfulwebservices.user.exceptionhandling;
+package com.sravan.rest.webservices.restfulwebservices.exceptionhandling;
 
 public class ErrorResponse {
 	

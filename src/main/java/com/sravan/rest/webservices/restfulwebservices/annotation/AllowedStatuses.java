@@ -1,7 +1,9 @@
-package com.sravan.rest.webservices.restfulwebservices.user;
+package com.sravan.rest.webservices.restfulwebservices.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import com.sravan.rest.webservices.restfulwebservices.validator.StatusValidator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

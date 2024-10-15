@@ -1,9 +1,10 @@
-package com.sravan.rest.webservices.restfulwebservices.user;
+package com.sravan.rest.webservices.restfulwebservices.validator;
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.sravan.rest.webservices.restfulwebservices.user.exceptionhandling.InvalidStatusException;
+import com.sravan.rest.webservices.restfulwebservices.annotation.AllowedStatuses;
+import com.sravan.rest.webservices.restfulwebservices.exceptionhandling.InvalidStatusException;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
